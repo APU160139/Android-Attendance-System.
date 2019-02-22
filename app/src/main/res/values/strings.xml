@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Android Attendance System</string>
+    <string-array name="Feature">
+        <item>Take Attendance</item>
+        <item>Student Profile</item>
+        <item>Class Schedule</item>
+        <item>Attendance Statistics</item>
+    </string-array>
+</resources>
