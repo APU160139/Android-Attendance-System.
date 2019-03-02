@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.zip.Inflater;
 
 public class CustomAdapter extends BaseAdapter {
+
     Context context;
     int[] image;
     String[] Feature;
