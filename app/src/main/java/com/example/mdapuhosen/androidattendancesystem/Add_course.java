@@ -1,60 +1,51 @@
 package com.example.mdapuhosen.androidattendancesystem;
-
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-public class Add_course extends AppCompatActivity {
-    Activity activity = this;
+import java.util.ArrayList;
 
+
+public class Add_course extends AppCompatActivity implements View.OnClickListener{
+    private EditText edit_name,edit_code,edit_dept;
+    private Button add;
+    MyDatabaseHelper myDatabaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
-        Button btn = (Button) findViewById(R.id.buttonSAVE);
-        assert btn != null;
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveToDatabase(v);
+
+        myDatabaseHelper = new MyDatabaseHelper(this);
+        SQLiteDatabase db = myDatabaseHelper.getWritableDatabase();
+        edit_name = findViewById(R.id.course_name);
+        edit_code = findViewById(R.id.code);
+        edit_dept = findViewById(R.id.dept);
+        add=findViewById(R.id.buttonSAVE);
+        add.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        String nam = edit_name.getText().toString();
+        String cod = edit_code.getText().toString();
+        String dep = edit_dept.getText().toString();
+        if (v.getId()==R.id.buttonSAVE){
+            long rowId = myDatabaseHelper.insertData(nam,cod,dep);
+            if (rowId>0){
+                Toast.makeText(getApplicationContext(), "Course Added", Toast.LENGTH_LONG).show();
             }
-        });
-    }
-
-
-    public void saveToDatabase(View view) {
-        EditText name = (EditText) findViewById(R.id.course_name);
-        EditText code = (EditText) findViewById(R.id.code);
-        EditText dept = (EditText) findViewById(R.id.dept);
-
-
-        if (name.getText().length() < 2 || code.getText().length() == 0 || dept.getText().length() < 2 ) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-            alert.setTitle("Invalid");
-            alert.setMessage("Insufficient Data");
-            alert.setPositiveButton("OK", null);
-            alert.show();
-            return;
+            else {
+                Toast.makeText(getApplicationContext(), "Course Added error", Toast.LENGTH_LONG).show();
+            }
         }
 
-        String qu = "INSERT INTO COURSE VALUES('" + name.getText().toString() + "'," +
-                "'" + name.getText().toString().toUpperCase() + "'," +
-                "'" + code.getText().toString() + "'," +
-                "" + Integer.parseInt(dept.getText().toString()) + ");";
-        Log.d("Student Reg", qu);
-        MainActivity.handler.execAction(qu);
-        qu = "SELECT * FROM STUDENT WHERE regno = '" + code.getText().toString() + "';";
-        Log.d("Student Reg", qu);
-        if (MainActivity.handler.execQuery(qu) != null) {
-            Toast.makeText(getBaseContext(), "Course Added", Toast.LENGTH_LONG).show();
-            this.finish();
-        }
-    }
     }
 
+
+}

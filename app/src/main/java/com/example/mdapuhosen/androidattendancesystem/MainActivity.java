@@ -9,8 +9,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 public class MainActivity extends AppCompatActivity {
-    public static DatabaseHandler handler;
-    public static Activity activity;
+
     int [] image ={R.drawable.attendance204,R.drawable.profile204,R.drawable.course,R.drawable.statistics};
     String[] Feature;
     private GridView gridview;
@@ -19,8 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        handler = new DatabaseHandler(this);
-        activity = this;
+
         Feature = getResources().getStringArray(R.array.Feature);
         gridview = findViewById(R.id.grid);
         CustomAdapter adapter = new CustomAdapter(this, Feature, image);
@@ -34,8 +32,16 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this,Attendance.class);
                     startActivity(intent);
                 }
+                else if (position==1){
+                    Intent intent = new Intent(MainActivity.this,Add_student.class);
+                    startActivity(intent);
+                }
                 else if (position==2){
-                    Intent intent = new Intent(MainActivity.this,Add_course.class);
+                    Intent intent = new Intent(MainActivity.this,Show_cours.class);
+                    startActivity(intent);
+                }
+                else if (position==3){
+                    Intent intent = new Intent(MainActivity.this,Statistics.class);
                     startActivity(intent);
                 }
             }
